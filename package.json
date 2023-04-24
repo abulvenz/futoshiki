@@ -1,0 +1,29 @@
+{
+  "name": "futoshiki",
+  "version": "1.0.0",
+  "description": "A Japanese sounding game from our newspaper.",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abulvenz/futoshiki.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abulvenz/futoshiki/issues"
+  },
+  "homepage": "https://github.com/abulvenz/futoshiki#readme",
+  "dependencies": {
+    "mithril": "^2.2.2",
+    "normalize.css": "^8.0.1",
+    "tagl-mithril": "^1.2.2"
+  },
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
+}
