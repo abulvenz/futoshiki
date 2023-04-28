@@ -33,28 +33,34 @@ jobs:
     - run: npm run build --if-present
     - run: ls docs/
     
-    - uses: actions/upload-artifact@v3
-      with:
-        name: gh-page
-        path: docs/
+#    - uses: actions/upload-artifact@v3
+#      with:
+#        name: gh-page
+#        path: docs/
+#    - uses: actions/download-artifact@v3
+#      id: download
+#      with:
+#        name: gh-page
+#        path: ./docs/
+
+#    - name: 'Echo download path'
+#      run: echo ${{steps.download.outputs.download-path}}
+
+#    - name: Commit report
+#      run: |     
+#        git config --global user.name 'Gitbot'
+#        git config --global user.email 'abulvenz@users.noreply.github.com'
+#        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
+#        git checkout "${GITHUB_REF:11}"
+#        git add -A
+#        git commit -am "Automated report"
+#        git push
         
-        
-
-    - uses: actions/download-artifact@v3
-      id: download
+    - name: Deploy to GitHub Pages
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v3
       with:
-        name: gh-page
-        path: ./docs/
-
-    - name: 'Echo download path'
-      run: echo ${{steps.download.outputs.download-path}}
-
-    - name: Commit report
-      run: |     
-        git config --global user.name 'Gitbot'
-        git config --global user.email 'abulvenz@users.noreply.github.com'
-        git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/$GITHUB_REPOSITORY
-        git checkout "${GITHUB_REF:11}"
-        git add -A
-        git commit -am "Automated report"
-        git push
+        target_branch: gh-pages
+        build_dir: public
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}      
