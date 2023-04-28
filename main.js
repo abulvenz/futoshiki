@@ -123,7 +123,7 @@ let percent = 80;
 m.mount(document.body, {
   view: (vnode) =>
     div.container([
-      h1("Futoshiki 2"),
+      h1("Futoshiki"),
       game === null
         ? [
             button({ onclick: () => (game = createGame()) }, "Create Game"),
