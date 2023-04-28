@@ -2,12 +2,79 @@ import m from "mithril";
 import { a, br, button, div, h1 } from "./tags";
 import generate from "./latin-square";
 
+const { trunc, random } = Math;
+
+const randomInt = (N) => trunc(random() * N);
+
 const range = (N) => {
   const r = [];
   for (let i = 0; i < N; i++) {
     r.push(i);
   }
   return r;
+};
+const contains = (arr, n) => arr.indexOf(n) >= 0;
+const without = (arr, remove) => arr.filter((e) => !contains(remove, e));
+
+const possibleValues = (x, y, squareSize, rows, horizontal, vertical) => {
+  const row = rows[y]
+    .map((fields) => fields.value)
+    .filter((e) => e !== undefined);
+
+  const col = rows
+    .map((fields) => fields[x].value)
+    .filter((e) => e !== undefined);
+
+  const remaining = without(
+    without(
+      range(squareSize).map((e) => e + 1),
+      col
+    ),
+    row
+  );
+
+  console.log(row, col, remaining);
+  return remaining;
+};
+
+const possibleFields = (squareSize, rows, horizontal, vertical) => {
+  let nextPossible = false;
+  rows.forEach((row, ridx) => {
+    row.forEach((field, cidx) => {
+      console.log(field);
+    });
+  });
+};
+
+const solver = (squareSize, rows, horizontal, vertical) => {
+  let found = false;
+  range(squareSize).forEach((r) =>
+    range(squareSize).forEach(
+      (c) =>
+        (rows[r][c].small = possibleValues(
+          c,
+          r,
+          squareSize,
+          rows,
+          horizontal,
+          vertical
+        ))
+    )
+  );
+
+  if (found) {
+    return solver(squareSize, rows, horizontal, vertical);
+  }
+
+  possibleFields(rows, horizontal, vertical);
+};
+
+const remover = (squareSize, rows, horizontal, vertical) => {
+  const x = randomInt(squareSize);
+  const y = randomInt(squareSize);
+  rows[y][x].value = undefined;
+  possibleValues(x, y, squareSize, rows, horizontal, vertical);
+  possibleFields(squareSize, rows, horizontal, vertical);
 };
 
 const createGame = (squareSize = 4) => {
@@ -27,16 +94,20 @@ const createGame = (squareSize = 4) => {
       value: values[ridx][cidx] > values[ridx + 1][cidx],
     }))
   );
-  console.log(horizontal);
 
   const rows = range(squareSize).map((ridx) =>
     range(squareSize).map((cidx) => ({
       ridx,
       cidx,
       init: values[ridx][cidx],
-      value: undefined,
+      value: random() > 0.9 ? values[ridx][cidx] : undefined,
+      small: [values[ridx][cidx]],
     }))
   );
+
+  remover(squareSize, rows, horizontal, vertical);
+  solver(squareSize, rows, horizontal, vertical);
+
   return {
     squareSize,
     rows: () => rows,
@@ -73,7 +144,7 @@ m.mount(document.body, {
               .rows()
               .map((row, ridx) => [
                 row.map((field, cidx) => [
-                  div.box(`${field.init}`),
+                  div.box(field.value, br(), "{", field.small.join(","), "}"),
                   cidx !== row.length - 1
                     ? div.between[
                         game.horizontal()[ridx][cidx].value === true

@@ -9,9 +9,9 @@ const range = (S, N, r = []) =>
   S === N ? r : range(S + (N > S ? 1 : -1), N, [...r, S]);
 const flatMap = (arr, fn = (e) => e) =>
   arr.reduce((acc, v) => acc.concat(fn(v)), []);
-const without = (arr, remove) => arr.filter((e) => !contains(remove, e));
 const column = (mat, cidx) => mat.map((row) => row[cidx]);
 const contains = (arr, n) => arr.indexOf(n) >= 0;
+const without = (arr, remove) => arr.filter((e) => !contains(remove, e));
 const pickRandomly = (arr = []) => arr[trunc(random() * arr.length)];
 
 const shuffle = (arr, r = []) =>

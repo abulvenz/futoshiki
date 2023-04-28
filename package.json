@@ -2,9 +2,9 @@
   "name": "futoshiki",
   "version": "1.0.0",
   "description": "A Japanese sounding game from our newspaper.",
-  "main": "index.js",
   "scripts": {
     "start": "parcel index.html",
+    "build": "rm -rf docs && parcel build --public-url=https://abulvenz.github.io/futoshiki --dist-dir=docs/ index.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
