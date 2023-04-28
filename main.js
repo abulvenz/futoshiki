@@ -77,6 +77,7 @@ const remover = (squareSize, rows, horizontal, vertical) => {
   possibleFields(squareSize, rows, horizontal, vertical);
 };
 
+// This should be split up. Maybe we find another solution for the field data.
 const createGame = (squareSize = 4) => {
   const values = generate(squareSize);
 
